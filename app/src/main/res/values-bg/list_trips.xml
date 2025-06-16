@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <resources>
+<string-array name="trips">
+    <item>Варна</item>
+    <item>Бургас</item>
+    <item>Como, Italy</item>
+    <item>Rome, Italy</item>
+    <item>Istanbul, Turkey</item>
+    <item>Париж</item>
+    <item>Лондон</item>
+    <item>Барселона</item>
+</string-array>
+    </resources>

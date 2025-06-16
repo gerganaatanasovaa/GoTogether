@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:paddingBottom="100dp"
+    android:background="@color/white">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="24dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/create_plan"
+            android:textSize="25sp"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:layout_marginBottom="16dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/plan_name"
+            android:textStyle="bold"
+            android:textSize="15sp"
+            android:textColor="@color/black"/>
+        <EditText
+            android:id="@+id/planNameEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/enter_plan_name"
+            android:maxLength="20"
+            android:autofillHints="text"
+            android:inputType="text"
+            android:background="@drawable/round_input"
+            android:padding="12dp"
+            android:layout_marginBottom="16dp"/>
+
+        <TextView
+            android:id="@+id/planNameCounterTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/name_counter"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:layout_gravity="end"
+            android:layout_marginBottom="5dp"/>
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/upload"
+            android:textStyle="bold"
+            android:textSize="15sp"
+            android:textColor="@color/black"/>
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="160dp"
+            android:layout_marginBottom="16dp">
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/imageUploadImageView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:contentDescription="@string/upload_image"
+                android:scaleType="centerCrop"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="@android:color/transparent"
+                app:shapeAppearanceOverlay="@style/RoundedImageStyle" />
+
+            <ImageView
+                android:id="@+id/uploadIcon"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_upload"
+                android:contentDescription="@string/upload_image"
+                app:tint="@color/black" />
+        </FrameLayout>
+
+
+
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/about_trip"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:textColor="@color/black"/>
+        <EditText
+            android:id="@+id/aboutTripEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/type_something"
+            android:autofillHints="text"
+            android:inputType="textCapSentences|textMultiLine"
+            android:maxLength="100"
+            android:gravity="top"
+            android:minLines="3"
+            android:background="@drawable/round_input"
+            android:padding="12dp"
+            android:layout_marginBottom="4dp" />
+
+        <TextView
+            android:id="@+id/textCounterTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/text_counter_initial"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:layout_gravity="end"
+            android:layout_marginBottom="16dp" />
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/date"
+            android:textStyle="bold"
+            android:textSize="15sp"
+            android:textColor="@color/black"/>
+        <EditText
+            android:id="@+id/dateEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/date"
+            android:autofillHints="date"
+            android:inputType="none|date"
+            android:focusable="true"
+            android:focusableInTouchMode="false"
+            android:clickable="true"
+            android:background="@drawable/round_input"
+            android:drawableEnd="@drawable/ic_nav_calendar"
+            android:padding="12dp"
+            android:layout_marginBottom="16dp"/>
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/destination"
+            android:textStyle="bold"
+            android:textSize="15sp"
+            android:textColor="@color/black"/>
+        <AutoCompleteTextView
+            android:id="@+id/autoDestination"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/about_destination"
+            android:background="@drawable/round_input"
+            android:drawableEnd="@drawable/ic_arrow_drop_down"
+            android:padding="12dp"
+            android:layout_marginBottom="16dp"
+            android:inputType="textCapWords"
+            android:autofillHints="postalAddress" />
+
+
+        <Button
+            android:id="@+id/createButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/create"
+            android:background="@drawable/round_button"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:minWidth="120dp"
+            android:paddingStart="32dp"
+            android:paddingEnd="32dp"
+            android:layout_gravity="center" />
+
+    </LinearLayout>
+</ScrollView>

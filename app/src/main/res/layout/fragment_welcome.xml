@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="24dp"
+    android:background="@drawable/highway">
+
+    <ImageView
+        android:id="@+id/logoImage"
+        android:layout_width="wrap_content"
+        android:layout_height="90dp"
+        android:layout_marginTop="24dp"
+        android:contentDescription="@string/app_logo"
+        android:src="@drawable/logo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/signupButton"
+        android:layout_width="165dp"
+        android:layout_height="69dp"
+        android:text="@string/sign_up"
+        android:textColor="@color/black"
+        android:backgroundTint="@color/buttonColor"
+        android:textStyle="bold"
+        android:textSize="26sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginBottom="110dp"
+        android:background="@drawable/round_button"/>
+
+    <Button
+        android:id="@+id/loginButton"
+        android:layout_width="165dp"
+        android:layout_height="69dp"
+        android:text="@string/login"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        android:textSize="26sp"
+        app:layout_constraintBottom_toTopOf="@id/signupButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginBottom="15dp"
+        android:background="@drawable/round_button" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
