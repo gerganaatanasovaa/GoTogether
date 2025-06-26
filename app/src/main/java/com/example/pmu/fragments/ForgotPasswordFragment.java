@@ -1,28 +1,14 @@
 package com.example.pmu.fragments;
 
-import android.os.Bundle;
 import android.util.Patterns;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-
 import com.example.pmu.R;
-import com.example.pmu.interfaces.SimpleCallback;
-import com.example.pmu.interfaces.VerificationCodeListener;
-import com.example.pmu.utils.RequestBuilder;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.FieldValue;
-import com.google.firebase.firestore.FirebaseFirestore;
-
-import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
-
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Random;
 
 @EFragment(R.layout.fragment_forgot_pass)
 public class ForgotPasswordFragment extends BaseFragment {

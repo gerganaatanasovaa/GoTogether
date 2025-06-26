@@ -182,6 +182,7 @@ public class CreatePlanFragment extends BaseFragment {
                 RequestBuilder.createTrip(newPlan, new PlanListener() {
                     @Override
                     public void onSuccess() {
+                        clearForm();
                         addFragment(((MainActivity) requireActivity())
                                 .homePageFragment);
                     }
@@ -196,7 +197,6 @@ public class CreatePlanFragment extends BaseFragment {
             }
             @Override
             public void onFailure(String errorMessage) {
-                // upload failed—notify the user
                 Toast.makeText(requireContext(),
                                 errorMessage,
                                 Toast.LENGTH_LONG)
@@ -204,4 +204,16 @@ public class CreatePlanFragment extends BaseFragment {
             }
         });
     }
+
+    private void clearForm() {
+        planNameEditText.setText("");
+        aboutTripEditText.setText("");
+        dateEditText.setText("");
+        autoDestination.setText("");
+        planNameCounterTextView.setText(R.string.name_counter);
+        textCounterTextView.setText("0/100");
+        selectedImageUri = null;
+        imageUploadImageView.setImageResource(R.drawable.ic_placeholder);
+    }
+
 }

@@ -48,6 +48,8 @@ public class FilteredPlansFragment extends BaseFragment{
 
     @AfterViews
     void init() {
+        setupSearch();
+
         String firstName = User.getInstance().getFirstName();
         helloTextView.setText(getString(R.string.hello, firstName));
         recyclerViewPlans.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -57,6 +59,14 @@ public class FilteredPlansFragment extends BaseFragment{
         } else {
             loadFilteredPlans();
         }
+    }
+
+    private void setupSearch() {
+        searchEditText.setFocusable(false);
+        searchEditText.setClickable(true);
+        searchEditText.setOnClickListener(view -> {
+            addFragment(new SearchPlanFragment_());
+        });
     }
 
     private void loadFilteredPlans() {

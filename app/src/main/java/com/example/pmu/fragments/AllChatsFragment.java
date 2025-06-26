@@ -30,7 +30,6 @@ public class AllChatsFragment extends BaseFragment {
     private final List<ConversationModel> conversationList = new ArrayList<>();
 
 
-
     @AfterViews
     void init() {
         adapter = new ConversationAdapter(

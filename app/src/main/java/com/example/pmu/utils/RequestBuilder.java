@@ -2,7 +2,6 @@ package com.example.pmu.utils;
 
 import android.content.Context;
 import android.net.Uri;
-
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -11,7 +10,6 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 //import com.example.pmu.fragments.ProfileFragment_;
 import com.example.pmu.R;
-import com.example.pmu.interfaces.CodeVerificationListener;
 import com.example.pmu.interfaces.CommentsListener;
 import com.example.pmu.interfaces.ConversationsListener;
 import com.example.pmu.interfaces.DestinationListener;
@@ -19,9 +17,6 @@ import com.example.pmu.interfaces.ImageUploadListener;
 import com.example.pmu.interfaces.LoginAndRegisterListener;
 import com.example.pmu.interfaces.MessageListener;
 import com.example.pmu.interfaces.MessageSentListener;
-
-import com.example.pmu.interfaces.PasswordResetListener;
-import com.example.pmu.interfaces.PhotosFetchedListener;
 import com.example.pmu.interfaces.PlanInfoListener;
 import com.example.pmu.interfaces.SimpleCallback;
 import com.example.pmu.interfaces.UserFetchListener;
@@ -29,7 +24,6 @@ import com.example.pmu.interfaces.UserJoinStatusListener;
 import com.example.pmu.interfaces.PlanSearchListener;
 import com.example.pmu.interfaces.PlanListener;
 import com.example.pmu.interfaces.UserListener;
-import com.example.pmu.interfaces.VerificationCodeListener;
 import com.example.pmu.models.ChatPreview;
 import com.example.pmu.models.CommentModel;
 import com.example.pmu.models.ConversationModel;
@@ -44,40 +38,31 @@ import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
-
 import android.util.Log;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-
 import com.google.firebase.firestore.FieldValue;
-
 import java.util.ArrayList;
 import java.util.Objects;
-import java.util.Random;
 import java.util.UUID;
-
 import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.firestore.WriteBatch;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -97,8 +82,7 @@ public class RequestBuilder {
         void onSuccess(String userId);
         void onFailure(Exception e);
     }
-
-
+    
     public static void register(Context context, User user, String password, LoginAndRegisterListener listener)
     {
         final FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -128,6 +112,8 @@ public class RequestBuilder {
 
                             user.setUserId(localId);
 
+                            FirebaseAuth.getInstance().signInWithEmailAndPassword(user.getEmail(), password)
+                                    .addOnSuccessListener(authResult -> {
                             Map<String, Object> userMap = new HashMap<>();
                             userMap.put("userId",           user.getUserId());
                             userMap.put("email",            user.getEmail());
@@ -149,7 +135,9 @@ public class RequestBuilder {
                                         listener.onFailure("Failed to save user in database.");
                                     });
 
-                        } catch (JSONException e) {
+                        });
+                        }
+                        catch (JSONException e) {
                             Log.e(TAG, "Failed to parse Auth response", e);
                         }
                     }
@@ -198,49 +186,41 @@ public class RequestBuilder {
         requestQueue.add(signUpRequest);
     }
 
-
     public static void login(String email, String password, LoginAndRegisterListener listener) {
-        FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-                        if (firebaseUser != null) {
-                            String userId = firebaseUser.getUid();
-
-                            FirebaseFirestore.getInstance()
-                                    .collection("users")
-                                    .document(userId)
-                                    .get()
-                                    .addOnSuccessListener(documentSnapshot -> {
-                                        if (documentSnapshot.exists()) {
-                                            String firstName = documentSnapshot.getString("firstName");
-                                            String emailFromDb = documentSnapshot.getString("email");
-                                            String picture = documentSnapshot.getString("profileImageUrl");
-                                            String country = documentSnapshot.getString("country");
-                                            String bio = documentSnapshot.getString("bio");
-                                            Timestamp createdAt = documentSnapshot.getTimestamp("createdAt");
-
-                                            User.getInstance().setUserId(userId);
-                                            User.getInstance().setFirstName(firstName);
-                                            User.getInstance().setEmail(emailFromDb);
-                                            User.getInstance().setProfileImageUrl(picture);
-                                            User.getInstance().setCountry(country);
-                                            User.getInstance().setBio(bio);
-                                            User.getInstance().setCreatedAt(createdAt);
-
-                                            listener.onSuccess();
-                                        } else {
-                                            listener.onFailure("User not found.");
-                                        }
-                                    })
-                                    .addOnFailureListener(e -> listener.onErrorResponse(e.getMessage()));
-                        } else {
-                            listener.onFailure("No current user.");
-                        }
-                    } else {
-                        listener.onFailure(Objects.requireNonNull(task.getException()).getMessage());
+        FirebaseAuth.getInstance()
+                .signInWithEmailAndPassword(email, password)
+                .addOnSuccessListener(authResult -> {
+                    FirebaseUser firebaseUser = authResult.getUser();
+                    if (firebaseUser == null) {
+                        listener.onFailure("Login failed: user is null.");
+                        return;
                     }
-                });
+
+                    String userId = firebaseUser.getUid();
+
+                    FirebaseFirestore.getInstance()
+                            .collection("users")
+                            .document(userId)
+                            .get()
+                            .addOnSuccessListener(documentSnapshot -> {
+                                if (!documentSnapshot.exists()) {
+                                    listener.onFailure("User document not found.");
+                                    return;
+                                }
+
+                                User.getInstance().setUserId(userId);
+                                User.getInstance().setFirstName(documentSnapshot.getString("firstName"));
+                                User.getInstance().setEmail(documentSnapshot.getString("email"));
+                                User.getInstance().setProfileImageUrl(documentSnapshot.getString("profileImageUrl"));
+                                User.getInstance().setCountry(documentSnapshot.getString("country"));
+                                User.getInstance().setBio(documentSnapshot.getString("bio"));
+                                User.getInstance().setCreatedAt(documentSnapshot.getTimestamp("createdAt"));
+
+                                listener.onSuccess();
+                            })
+                            .addOnFailureListener(e -> listener.onErrorResponse("Firestore error: " + e.getMessage()));
+                })
+                .addOnFailureListener(e -> listener.onFailure("Authentication failed: " + e.getMessage()));
     }
 
     public static void createTrip(Plan plan, PlanListener listener) {
@@ -344,22 +324,6 @@ public class RequestBuilder {
                     listener.onSuccess(matched);
                 })
                 .addOnFailureListener(e -> listener.onFailure(e.getMessage()));
-    }
-
-
-    public static void getUserPhotos(String userId, PhotosFetchedListener listener) {
-        FirebaseFirestore.getInstance()
-                .collection("users")
-                .document(userId)
-                .collection("photos")
-                .get()
-                .addOnSuccessListener(snapshot -> {
-                    List<String> photoUrls = new ArrayList<>();
-                    for (DocumentSnapshot doc : snapshot.getDocuments()) {
-                        photoUrls.add(doc.getString("url"));
-                    }
-                    listener.onFetched(photoUrls);
-                });
     }
 
     public static void getPlanById(String tripId, PlanInfoListener listener) {
@@ -518,21 +482,21 @@ public class RequestBuilder {
             String myUserId,
             ConversationsListener listener) {
 
-        FirebaseFirestore db     = FirebaseFirestore.getInstance();
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
         Query msgs = db.collectionGroup("messages");
 
-
-        // 1) Fire off queries for sent & received messages in parallel
         Task<QuerySnapshot> sentTask = msgs
-                .whereEqualTo("senderId",   myUserId)
+                .whereEqualTo("senderId", myUserId)
+                .orderBy("timestamp")
                 .get();
+
         Task<QuerySnapshot> recvTask = msgs
                 .whereEqualTo("receiverId", myUserId)
+                .orderBy("timestamp")
                 .get();
 
         Tasks.whenAllSuccess(sentTask, recvTask)
                 .addOnSuccessListener(results -> {
-                    // 2) Flatten into a single list of Message
                     List<Message> allMsgs = new ArrayList<>();
                     for (Object r : results) {
                         QuerySnapshot snap = (QuerySnapshot) r;
@@ -542,45 +506,40 @@ public class RequestBuilder {
                         }
                     }
 
-                    // 3) Build a map: partnerId → most recent Message with that partner
                     Map<String, Message> lastMsgPerPartner = new HashMap<>();
                     for (Message m : allMsgs) {
                         String partnerId = m.getSenderId().equals(myUserId)
                                 ? m.getReceiverId()
                                 : m.getSenderId();
+
                         Message prev = lastMsgPerPartner.get(partnerId);
-                        if (prev == null
-                                || m.getTimestamp().toDate()
-                                .after(prev.getTimestamp().toDate())) {
+                        if (prev == null || m.getTimestamp().toDate().after(prev.getTimestamp().toDate())) {
                             lastMsgPerPartner.put(partnerId, m);
                         }
                     }
 
-                    // 4) If there are no conversations, return empty list
                     if (lastMsgPerPartner.isEmpty()) {
                         listener.onSuccess(Collections.emptyList());
                         return;
                     }
 
-                    // 5) Fetch each partner’s User and assemble Conversation objects
                     List<ConversationModel> convos = new ArrayList<>();
                     final int total = lastMsgPerPartner.size();
                     final int[] done = {0};
 
-                    lastMsgPerPartner.forEach((partnerId, lastMsg) -> {
+                    for (Map.Entry<String, Message> entry : lastMsgPerPartner.entrySet()) {
+                        String partnerId = entry.getKey();
+                        Message lastMsg = entry.getValue();
+
                         getUserById(partnerId, new UserFetchListener() {
                             @Override
                             public void onSuccess(User user) {
                                 convos.add(new ConversationModel(user, lastMsg));
 
-                                // when all are fetched, sort and call back
                                 if (++done[0] == total) {
                                     Collections.sort(convos, (a, b) ->
                                             b.getLastMessage().getTimestamp().toDate()
-                                                    .compareTo(
-                                                            a.getLastMessage().getTimestamp().toDate()
-                                                    )
-                                    );
+                                                    .compareTo(a.getLastMessage().getTimestamp().toDate()));
                                     listener.onSuccess(convos);
                                 }
                             }
@@ -590,36 +549,11 @@ public class RequestBuilder {
                                 listener.onFailure(error);
                             }
                         });
-                    });
-                })
-                .addOnFailureListener(e -> listener.onFailure(e.getMessage()));
-    }
-
-    private static boolean containsChat(List<ChatPreview> list, String chatId) {
-        for (ChatPreview c : list) {
-            if (c.getChatId().equals(chatId)) return true;
-        }
-        return false;
-    }
-
-
-    public static void loadMessages(String otherUserId, MessageListener listener) {
-        String myId = User.getInstance().getUserId();
-        FirebaseFirestore.getInstance()
-                .collection("chats")
-                .document(myId + "_" + otherUserId)
-                .collection("messages")
-                .orderBy("timestamp")
-                .get()
-                .addOnSuccessListener(snapshot -> {
-                    List<Message> msgs = new ArrayList<>();
-                    for (DocumentSnapshot doc : snapshot.getDocuments()) {
-                        msgs.add(doc.toObject(Message.class));
                     }
-                    listener.onSuccess(msgs);
                 })
                 .addOnFailureListener(e -> listener.onFailure(e.getMessage()));
     }
+
 
     public static void getUsersByIds(List<String> userIds, UserListener listener) {
         if (userIds == null || userIds.isEmpty()) {
@@ -728,48 +662,6 @@ public class RequestBuilder {
                                     .addOnFailureListener(e -> listener.onFailure("Failed to save photo to Firestore"));
                         }))
                 .addOnFailureListener(e -> listener.onFailure("Failed to upload to Storage: " + e.getMessage()));
-    }
-
-    public static void loadChatMessages(String senderId,
-                                 String receiverId,
-                                 MessageListener listener) {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        CollectionReference msgs = db.collection("message");
-
-        // Query A → you → them
-        Query q1 = msgs
-                .whereEqualTo("senderId",   senderId)
-                .whereEqualTo("receiverId", receiverId);
-
-        // Query B → them → you
-        Query q2 = msgs
-                .whereEqualTo("senderId",   receiverId)
-                .whereEqualTo("receiverId", senderId);
-
-        // Fire both queries in parallel...
-        Task<QuerySnapshot> t1 = q1.get();
-        Task<QuerySnapshot> t2 = q2.get();
-
-        // ...and wait for both to succeed
-        Tasks.whenAllSuccess(t1, t2)
-                .addOnSuccessListener(results -> {
-                    List<Message> all = new ArrayList<>();
-                    for (Object result : results) {
-                        QuerySnapshot snap = (QuerySnapshot) result;
-                        for (DocumentSnapshot doc : snap.getDocuments()) {
-                            all.add(doc.toObject(Message.class));
-                        }
-                    }
-
-                    Collections.sort(all, (m1, m2) ->
-                            m1.getTimestamp().compareTo(m2.getTimestamp())
-                    );
-                    listener.onSuccess(all);
-                })
-                .addOnFailureListener(e -> {
-
-                    listener.onFailure(e.getMessage());
-                });
     }
 
     public static void getCommentsForTrip(String tripId, EventListener<QuerySnapshot> listener) {
@@ -885,20 +777,50 @@ public class RequestBuilder {
 
     public static void getDestinations(DestinationListener listener) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
+        String lang = Locale.getDefault().getLanguage();
 
         db.collection("destinations")
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     List<Destination> destinationList = new ArrayList<>();
+                    List<Task<Void>> translationTasks = new ArrayList<>();
+
                     for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
                         Destination destination = doc.toObject(Destination.class);
+
+                        if (!lang.equals("en")) {
+                            Task<Void> task = doc.getReference()
+                                    .collection("translations")
+                                    .document(lang)
+                                    .get()
+                                    .continueWith(t -> {
+                                        if (t.isSuccessful() && t.getResult() != null && t.getResult().exists()) {
+                                            DocumentSnapshot transDoc = t.getResult();
+                                            if (transDoc.contains("name")) {
+                                                destination.setName(transDoc.getString("name"));
+                                            }
+                                            if (transDoc.contains("description")) {
+                                                destination.setDescription(transDoc.getString("description"));
+                                            }
+                                        }
+                                        return null;
+                                    });
+
+                            translationTasks.add(task);
+                        }
+
                         destinationList.add(destination);
                     }
-                    listener.onSuccess(destinationList);
+
+                    if (translationTasks.isEmpty()) {
+                        listener.onSuccess(destinationList);
+                    } else {
+                        Tasks.whenAllComplete(translationTasks)
+                                .addOnSuccessListener(tasks -> listener.onSuccess(destinationList))
+                                .addOnFailureListener(e -> listener.onFailure(e.getMessage()));
+                    }
                 })
-                .addOnFailureListener(e -> {
-                    listener.onFailure(e.getMessage());
-                });
+                .addOnFailureListener(e -> listener.onFailure(e.getMessage()));
     }
 
 }

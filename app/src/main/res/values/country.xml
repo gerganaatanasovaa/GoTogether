@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="countries">
-        <item>United States</item>
+        <item>Argentina</item>
+        <item>Austria</item>
         <item>Bulgaria</item>
-        <item>Germany</item>
+        <item>Egypt</item>
         <item>France</item>
+        <item>Germany</item>
         <item>Italy</item>
-        <!-- добави още по желание -->
+        <item>Japan</item>
+        <item>Russia</item>
+        <item>United States</item>
     </string-array>
 </resources>

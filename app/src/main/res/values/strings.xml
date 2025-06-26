@@ -60,7 +60,6 @@
     <string name="last_name">Last name</string>
     <string name="email">Email</string>
     <string name="age">Age</string>
-    <string name="or">OR</string>
     <string name="participants">Participants</string>
     <string name="managed_by">Managed By</string>
     <string name="open_profile">Open profile</string>
@@ -70,19 +69,10 @@
     <string name="type_message">Type a message</string>
     <string name="send_message">Send a message</string>
     <string name="city">City</string>
-    <string name="region">Region</string>
-    <string name="searchLocation">Search around me</string>
-    <string name="rate">Rate</string>
-    <string name="rating">Rating:</string>
     <string name="comments">Comments</string>
     <string name="directions">Directions</string>
     <string name="done">Done</string>
-    <string name="details">Details</string>
-    <string name="routes">Routes</string>
-    <string name="ratedLocations">Rated locations</string>
-    <string name="avgRating">Average Rating</string>
     <string name="signOut">Sign out</string>
-    <string name="changeMap">Change map view</string>
     <string name="comment">Write a comment</string>
     <string name="information">Information</string>
     <string name="locations_permission_deny">To enable your location please visit Settings</string>
@@ -91,9 +81,6 @@
     <string name="error_while_searching">Error while searching</string>
     <string name="register_error">Please enter matching passwords</string>
     <string name="name">Name</string>
-    <string name="address">Address</string>
-    <string name="camera_forbidden">Access to camera was denied</string>
-    <string name="camera_failed">Error with the camera</string>
     <string name="invalid_registration">Please make sure that you enter a valid email and your first name is over 6 letters</string>
     <string name="back_button">Back</string>
     <string name="desc_italy">Ne znam kakvo da napisha tuka</string>
@@ -104,9 +91,6 @@
     <string name="search">Search</string>
     <string name="search_plan">Search Plan</string>
     <string name="profile_picture">Profile picture</string>
-    <string name="followers">Followers</string>
-    <string name="following">Following</string>
-    <string name="follow">Follow</string>
     <string name="photos">Photos</string>
     <string name="add_photo">Add photo</string>
     <string name="send_mess">Send a message</string>

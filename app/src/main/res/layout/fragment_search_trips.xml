@@ -40,8 +40,8 @@
             android:autofillHints="destination"
             android:background="@drawable/round_input"
             android:drawableEnd="@drawable/ic_arrow_drop_down"
-            android:inputType="text"
-            android:padding="12dp"
+            android:inputType="textVisiblePassword"
+           android:padding="12dp"
            android:layout_marginTop="18dp"/>
 
         <TextView

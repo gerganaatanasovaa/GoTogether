@@ -54,7 +54,7 @@
             android:layout_height="wrap_content"
             android:hint="@string/password"
             android:autofillHints="password"
-            android:textColorHint="@color/textColor"
+            android:textColorHint="@color/black"
             android:inputType="textPassword"
             android:background="@drawable/round_input"
             android:drawableEnd="@drawable/ic_visibility"

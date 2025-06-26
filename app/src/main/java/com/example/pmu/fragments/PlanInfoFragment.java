@@ -248,7 +248,6 @@ public class PlanInfoFragment extends BaseFragment {
 
     @Click(R.id.planLocationTextView)
     void onPlanLocationClicked() {
-        // 1) Check permission
         if (ContextCompat.checkSelfPermission(requireContext(),
                 Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -260,7 +259,6 @@ public class PlanInfoFragment extends BaseFragment {
             return;
         }
 
-        // 2) Permission granted → get last known location
         fusedLocationClient.getLastLocation()
                 .addOnSuccessListener(location -> {
                     if (location != null) {
@@ -295,7 +293,6 @@ public class PlanInfoFragment extends BaseFragment {
         if (requestCode == REQUEST_LOCATION_PERMISSION) {
             if (grantResults.length > 0
                     && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                // retry
                 onPlanLocationClicked();
             } else {
                 Toast.makeText(
@@ -308,7 +305,8 @@ public class PlanInfoFragment extends BaseFragment {
     }
 
     private void launchDrivingDirections(double lat, double lon) {
-        String origin      = lat + "," + lon;
+
+        String origin = "42.6597,23.3516";
         String destination = Uri.encode(planLocationTextView.getText().toString());
 
         Uri uri = Uri.parse(
@@ -332,7 +330,6 @@ public class PlanInfoFragment extends BaseFragment {
             ).show();
         }
     }
-
 }
 
 

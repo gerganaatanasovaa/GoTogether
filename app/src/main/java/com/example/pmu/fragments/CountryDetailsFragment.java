@@ -58,6 +58,11 @@ public class CountryDetailsFragment extends BaseFragment {
         }
     }
 
+    @Click(R.id.backImageButton)
+    void onBackClicked() {
+        requireActivity().getSupportFragmentManager().popBackStack();
+    }
+
     @Click(R.id.viewPlansButton)
     void onSearchPlansClicked() {
         if (getArguments() == null) return;
