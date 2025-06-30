@@ -1,12 +1,7 @@
 package com.example.pmu.models;
 
-
-import android.graphics.Bitmap;
-
-import com.example.pmu.utils.AppService;
 import com.google.firebase.Timestamp;
 
-import java.util.BitSet;
 
 public class User {
 

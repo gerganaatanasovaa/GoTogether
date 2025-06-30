@@ -1,9 +1,7 @@
 package com.example.pmu.fragments;
 
 import android.annotation.SuppressLint;
-import android.graphics.Bitmap;
 import android.text.InputType;
-import android.util.Base64;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -20,7 +18,6 @@ import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
-import java.io.ByteArrayOutputStream;
 
 @EFragment(R.layout.fragment_signup)
 public class RegisterFragment extends BaseFragment {
@@ -115,7 +112,25 @@ public class RegisterFragment extends BaseFragment {
         RequestBuilder.register(requireContext(), user, password, new LoginAndRegisterListener() {
             @Override
             public void onSuccess() {
-                addFragment(((MainActivity) requireActivity()).homePageFragment);
+                RequestBuilder.login(email, password, new LoginAndRegisterListener() {
+                    @Override
+                    public void onSuccess() {
+                        addFragment(((MainActivity) requireActivity()).homePageFragment);
+                    }
+
+                    @Override
+                    public void onFailure(String message) {
+                        incorrectPassword.setText(R.string.incorrect_password);
+                        incorrectPassword.setVisibility(View.VISIBLE);
+                    }
+
+                    @Override
+                    public void onErrorResponse(String message) {
+                        usernameErrorTextView.setText(message);
+                        usernameErrorTextView.setVisibility(View.VISIBLE);
+                        showInputError(emailEditText);
+                    }
+                });
             }
 
             @Override
@@ -131,7 +146,6 @@ public class RegisterFragment extends BaseFragment {
                 showInputError(emailEditText);
             }
         });
-
     }
 
     private void showInputError(EditText field) {

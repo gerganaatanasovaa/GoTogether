@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
     <resources>
 <string-array name="trips">
-    <item>Варна, България</item>
-    <item>София, България</item>
-    <item>Созопол, България</item>
-    <item>България</item>
-    <item>Комо, Италия</item>
-    <item>Истанбул, Турция</item>
-    <item>Рим, Италия</item>
-    <item>Виена, Австрия</item>
-    <item>Будапеща, Унгария</item>
-    <item>Токио, Япония</item>
-    <item>Барселона, Испания</item>
-    <item>Ибиса, Испания</item>
+    <item>Varna, Bulgaria</item>
+    <item>Sofia, Bulgaria</item>
+    <item>Sozopol, Bulgaria</item>
+    <item>Bulgaria</item>
+    <item>Como, Italy</item>
+    <item>Istanbul, Turkey</item>
+    <item>Rome, Italy</item>
+    <item>Vienna, Austria</item>
+    <item>Budapest, Hungary</item>
+    <item>Tokyo, Japan</item>
+    <item>Barcelona, Spain</item>
+    <item>Ibiza, Spain</item>
 </string-array>
     </resources>

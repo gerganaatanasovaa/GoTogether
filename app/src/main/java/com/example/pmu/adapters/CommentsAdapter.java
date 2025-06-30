@@ -2,32 +2,22 @@ package com.example.pmu.adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.bumptech.glide.Glide;
 import com.example.pmu.R;
-import com.example.pmu.activity.MainActivity;
 import com.example.pmu.interfaces.SimpleCallback;
 import com.example.pmu.interfaces.UserFetchListener;
 import com.example.pmu.models.CommentModel;
 import com.example.pmu.models.User;
 import com.example.pmu.utils.RequestBuilder;
-
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
